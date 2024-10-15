@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepDarkService", "DeepDarkService\DeepDarkService.csproj", "{EE7FC02E-BF04-4451-87B4-773FA46D2E3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepDarkService.Tests", "DeepDarkService.Tests\DeepDarkService.Tests.csproj", "{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE7FC02E-BF04-4451-87B4-773FA46D2E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE7FC02E-BF04-4451-87B4-773FA46D2E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE7FC02E-BF04-4451-87B4-773FA46D2E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE7FC02E-BF04-4451-87B4-773FA46D2E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

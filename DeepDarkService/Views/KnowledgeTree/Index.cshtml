@@ -1,0 +1,119 @@
+@{
+ViewData["Title"] = "Knowledge Tree Builder Page";
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop File Upload</title>
+    <style>
+        #dropArea {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 30px;
+            width: 300px;
+            margin: auto;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        #dropArea.hover {
+            border-color: #333;
+            background-color: #e0f7fa;
+        }
+
+        input[type="file"] {
+            display: none; /* Hide the default file input */
+        }
+
+        .instructions {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #fileName {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align:center;">Upload a text file and I'll add a string</h2>
+
+<form method="post" enctype="multipart/form-data" action="/KnowledgeTree/DragNDrop" id="uploadForm">
+    <div id="dropArea">
+        <p class="instructions">Drag & Drop your file here or click to select a file</p>
+        <input type="file" name="file" id="fileInput">
+        <div id="fileName"></div> <!-- Display uploaded file name here -->
+    </div>
+    <button type="submit">Upload</button>
+</form>
+
+<script>
+    const dropArea = document.getElementById('dropArea');
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDisplay = document.getElementById('fileName');
+
+    // Prevent default behavior when file is dragged over the drop area
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    // Highlight the drop area when file is dragged over
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.add('hover'), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, () => dropArea.classList.remove('hover'), false);
+    });
+
+    // Handle the drop event
+    dropArea.addEventListener('drop', (e) => {
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files; // Set the file input to the dropped file
+            fileNameDisplay.textContent = `File: ${files[0].name}`; // Display the file name
+        }
+    });
+
+    // Allow click on the drop area to trigger file input click
+    dropArea.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Show the file name when selected through file input
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileNameDisplay.textContent = `File: ${fileInput.files[0].name}`; // Display the file name
+        } else {
+            fileNameDisplay.textContent = ''; // Clear the file name if no file is selected
+        }
+    });
+</script>
+
+</body>
