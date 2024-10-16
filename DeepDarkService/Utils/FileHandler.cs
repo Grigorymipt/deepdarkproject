@@ -12,7 +12,7 @@ public static class FileHandler
         => Parser.Parser.GetVerticesFromFile(fileContent);
 
     // TODO: rm hardcode
-    private const double Threshold = 0.8;
+    private const double Threshold = 0.9;
     private const int MaxChunkSize = 50;
     
     public static List<Edge> GetListOfEdges(List<Vertex> vertexList)
