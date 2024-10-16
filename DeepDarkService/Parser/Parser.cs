@@ -5,23 +5,23 @@ namespace DeepDarkService.Parser;
 
 public static class Parser
 {
-    public static async Task<List<Edge>> GetEdgesFromFile(IFormFile file)
+    public static async Task<List<Vertex>> GetVerticesFromFile(IFormFile file)
     {
         using var reader = new StreamReader(file.OpenReadStream());
         var fileContent = await reader.ReadToEndAsync();
-        return GetEdgesFromFile(fileContent);
+        return GetVerticesFromFile(fileContent);
     }
 
-    public static List<Edge> GetEdgesFromFile(string fileContent)
+    public static List<Vertex> GetVerticesFromFile(string fileContent)
     {
         var markdownDocument = Markdig.Markdown.Parse(fileContent);
         return ExtractHeadersWithBodies(markdownDocument);
     }
 
 
-    static List<Edge> ExtractHeadersWithBodies(MarkdownDocument document)
+    static List<Vertex> ExtractHeadersWithBodies(MarkdownDocument document)
     {
-        var result = new List<Edge>();
+        var result = new List<Vertex>();
         string currentHeader = null;
         var currentBody = new List<string>();
         int level = 0; 
@@ -34,7 +34,7 @@ public static class Parser
                 if (currentHeader != null)
                 {
                     result.Add(
-                        new Edge(currentHeader, string.Join(Environment.NewLine, currentBody), level)
+                        new Vertex(currentHeader, string.Join(Environment.NewLine, currentBody), level)
                         );
                     currentBody.Clear(); // Clear the body for the new header
                     
@@ -53,7 +53,7 @@ public static class Parser
         // Add the last header and body after the loop ends
         if (currentHeader != null)
         {
-            result.Add(new Edge(currentHeader, string.Join(Environment.NewLine, currentBody), level));
+            result.Add(new Vertex(currentHeader, string.Join(Environment.NewLine, currentBody), level));
         }
         return result;
     }
