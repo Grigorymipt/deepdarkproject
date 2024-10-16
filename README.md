@@ -43,7 +43,7 @@ Markdown-cтруктура каждого файла содержит инфор
 
 Для этого использовался ряд предобученных моделей. Стандартная библиотека [Sentence Transformers](https://github.com/UKPLab/sentence-transformers) не содержит модели, обученной для русского языка, но в качестве потенциального baseline была произведена оценка многоязыковой модели paraphrase-multilingual-MiniLM-L12-v2. Позже, использовалась модель [RuBERT](https://huggingface.co/DeepPavlov/rubert-base-cased-sentence) от DeepPavlov, обученная специально для русского языка. Оценка производилась на размеченном вручную игрушечном датасете. Она показывает ROC-AUC=0.71, и будет являться baseline-реализацией. 
 
-!["ROC"](./assets/dp_roc.png)
+!["ROC"](./dp_roc.png)
 
 Пути дальнейшей разработки - повторение тестов на [SOTA-модели](https://habr.com/ru/companies/sberdevices/articles/527576/) извлечения текстовых эмбеддингов для русского языка [SBERT](https://huggingface.co/ai-forever/sbert_large_nlu_ru), потенциально - файнтюнинг модели на [корпусе](https://github.com/irlcode/RusLawOD) официальных документов на русском языке. 
 
