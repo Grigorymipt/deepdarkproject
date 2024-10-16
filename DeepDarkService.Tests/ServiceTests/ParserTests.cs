@@ -27,7 +27,7 @@ public class ParserTests
     public void ExampleTest()
     {
         // Пусть мы достали из Edge какой то айдишник
-        var IdFromEdge = new Guid(); 
+        var IdFromEdge = Guid.NewGuid(); 
         
         // Пусть у нас есть лист каких то вершин(vertices)
         List<Vertex> vertices = new List<Vertex>();

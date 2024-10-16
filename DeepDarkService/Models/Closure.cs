@@ -5,7 +5,7 @@ namespace DeepDarkService.Models;
 public class Closure
 {
     [Key]
-    public Guid Id { get; set; } = new Guid();
+    public Guid Id { get; set; } = Guid.NewGuid();
    
     [Required]
     public Guid Ancestor { get; set; }
