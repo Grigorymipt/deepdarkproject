@@ -30,7 +30,7 @@ public class KnowledgeTreeController(ILogger<HomeController> logger) : Controlle
         }
 
         // Extract headers only
-        var headers = Parser.Parser.GetEdgesFromFile(fileContent)
+        var headers = Parser.Parser.GetVerticesFromFile(fileContent)
             .Select(edge => edge.Header).Aggregate("", (acc, edge) => $"{acc}\n{edge}")
             .ToString();
         

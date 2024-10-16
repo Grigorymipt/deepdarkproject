@@ -6,23 +6,23 @@ public class Edge
 {
     [Key]
     public Guid Id { get; set; } = new Guid();
+   
+    [Required]
+    public Guid First { get; set; }
+    [Required]
+    public Guid Second { get; set; }
     
     [Required]
-    public string Header { get; set; }
-    
-    [Required]
-    public string Body { get; set; }
-    
-    public int LocalDepth { get; set; }
+    public string Relation { get; set; }
     
     // EF can use this due to reflection
     private Edge() { }
 
     // For other users
-    public Edge(string header, string body, int localDepth)
+    public Edge(Guid first, Guid second, string relation)
     {
-        Header = header;   
-        Body = body;
-        LocalDepth = localDepth;
+        First = first;   
+        Second = second;
+        Relation = relation;
     }
 }
