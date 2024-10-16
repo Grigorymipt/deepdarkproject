@@ -11,7 +11,7 @@ public class Vertex
     public Guid First { get; set; }
     [Required]
     public Guid Second { get; set; }
-    
+
     [Required]
     public string Relation { get; set; }
     
