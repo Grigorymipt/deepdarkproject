@@ -1,3 +1,5 @@
+using System.Globalization;
+using System.Numerics;
 using DeepDarkService.Models;
 using Microsoft.ML;
 using Microsoft.ML.Transforms.Onnx;
@@ -63,4 +65,9 @@ public static class Embedding
 	    outputDatas.FirstOrDefault().LastHiddenState.CopyTo(avgEmbeddingsArray);
 	    return avgEmbeddingsArray;
     }
+    public static List<T> Get<T>(string inputStr) where T: INumber<T> 
+        => Get(inputStr).Select(x => T.Parse(
+            s: x.ToString(CultureInfo.InvariantCulture),
+            style: NumberStyles.Any, 
+            provider: CultureInfo.InvariantCulture)).ToList();
 }
