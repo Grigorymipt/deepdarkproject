@@ -1,6 +1,10 @@
+using System.Linq.Expressions;
 using System.Text;
+using DeepDarkService.Picture;
 using Microsoft.AspNetCore.Mvc;
 using DeepDarkService.Utils;
+using Hangfire;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 using TorchSharp.Modules;
 using Embedding = DeepDarkService.Knowledge.Embedding;
 using Math = DeepDarkService.Utils.Math;
@@ -34,9 +38,29 @@ public class KnowledgeTreeController(ILogger<HomeController> logger) : Controlle
         
         try
         {
-            var modifiedContent = FileHandler.HandleWithSVG(fileContent);
+            // var modifiedContent = FileHandler.HandleWithSVG(fileContent);
            
-            return File(modifiedContent, "image/svg+xml", "mind_map_from_" + file.FileName);
+            // return File(modifiedContent, "image/svg+xml", "mind_map_from_" + file.FileName);
+
+            // TODO: fixme
+            // var task = ()
+            //     => 1;
+            // {
+            //     return 
+            //         // return File(
+            //         //     FileHandler.HandleWithSVG<int>(fileContent),
+            //         //     "image/svg+xml",
+            //         //     "mind_map_from_" + file.FileName
+            //         // );
+            //     };
+            
+
+            // Return job ID to track status
+            return File(
+                FileHandler.HandleWithSVG<int>(fileContent, SVG.RenderMindMapToByteArray),
+                "image/svg+xml",
+                "mind_map_from_" + file.FileName
+            );
         }
         catch (Exception e)
         {
