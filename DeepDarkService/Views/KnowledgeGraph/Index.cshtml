@@ -1,0 +1,43 @@
+@{
+ViewData["Title"] = "Knowledge Tree View Page";
+}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DDL GRAPH</title>
+</head>
+<body>
+  <div class="container_graph" id="container_graph">
+    <div class="head-logo-alpha">
+      <img class="logo-alpha" src="~/images/ddl_logo_short.png" asp-append-version="true" />
+    </div>
+    <div class="headline"></div>
+    <div class="sidebar"></div>
+    <div class="svg_container">
+      <svg class="svg_graph" id="svg_graph"></svg>
+    </div>
+    <div class="bottom">
+      <a class="link-text" href="https://github.com/Grigorymipt/deepdarkproject/blob/master/DeepDarkService">
+        GitHubLink
+      </a>
+      <a class="link-text" href="https://t.me/+IznLyKD_1VUxODNi">
+        Telegram official
+      </a>
+      <p class="link-text">text 3</p>
+    </div>
+    <div class="node_info" id="ni">
+      <div class="node_info_string"></div>
+    </div>
+    <div class="subsvg_container">
+      <svg class="svg_subgraph" id="subsvg_graph"></svg>
+    </div>
+  </div>
+  <div class="tooltip"></div>
+  <!-- Link to D3.js Library from a CDN -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- CSS for Styling the Network Graph -->
+  <link href="~/css/graph_view_styles.css" rel="stylesheet" asp-append-version="true" />
+  <script src="~/js/requests.js" asp-append-version="true"></script>
+  <script src="~/js/graph_view.js" asp-append-version="true"></script>
+</body>
