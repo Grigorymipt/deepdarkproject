@@ -5,7 +5,9 @@ namespace DeepDarkService.Models;
 public class Vertex
 {
     [Key]
+
     public Guid Id { get; set; } = Guid.NewGuid();
+
     
     [Required]
     public string Header { get; set; }

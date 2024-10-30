@@ -5,6 +5,7 @@ namespace DeepDarkService.Models;
 public class Edge
 {
     [Key]
+
     public Guid Id { get; set; } = Guid.NewGuid();
    
     [Required]

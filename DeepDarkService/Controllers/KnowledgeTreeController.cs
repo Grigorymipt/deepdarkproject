@@ -35,6 +35,12 @@ public class KnowledgeTreeController(ILogger<HomeController> logger) : Controlle
         {
             fileContent = await reader.ReadToEndAsync();
         }
+
+        // Extract headers only
+        //var headers = Parser.Parser.GetVerticesFromFile(fileContent)
+        //    .Select(edge => edge.Header).Aggregate("", (acc, edge) => $"{acc}\n{edge}")
+        //    .ToString();
+
         
         try
         {
