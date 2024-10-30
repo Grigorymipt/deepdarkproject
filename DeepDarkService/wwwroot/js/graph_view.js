@@ -207,7 +207,7 @@ node
   })
   .on("click", (event, d) => {
     node_info.html(getHtmlString(d));
-    sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
+    //sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
     selectNode(d);
   });
 // Update positions on each tick of the simulation
@@ -310,9 +310,10 @@ function SUBrepelFromEdges(padding = 50, strength = 0.1) {
 }
 
 function selectNode(node) {
-  sub_svg.selectAll("circle").remove();
-  sub_svg.selectAll("line").remove();
   sub_svg.selectAll("text").remove();
+  subnodes.forEach(snode =>{
+    removeNodes(snode.id);
+  });
   subnodes.length = 0;
   sublinks.length = 0;
   subnodes.push(JSON.parse(JSON.stringify(node)));
@@ -333,45 +334,15 @@ function selectNode(node) {
   });
   subgraphData = { nodes: subnodes, links: sublinks };
   refreshSub();
+  subnodes.forEach((snode) =>{
+    addNode(snode);
+  });
+  sublinks.forEach((slink) =>{
+    addLink(slink);
+  });
 }
 
 function refreshSub() {
-  subsimulation = d3
-    .forceSimulation(subgraphData.nodes)
-    .force(
-      "link",
-      d3
-        .forceLink(subgraphData.links)
-        .id((d) => d.id)
-        .distance(100)
-    )
-    .force("charge", d3.forceManyBody().strength(-100))
-    .force("center", d3.forceCenter(subwidth / 2, subheight / 2))
-    .force("edge", SUBrepelFromEdges()); // Custom force to push nodes from edges
-  // Create lines for the links
-  sublink = sub_svg
-    .selectAll("line")
-    .data(subgraphData.links)
-    .enter()
-    .append("line")
-    .attr("stroke", (d) => d.color);
-
-  // Create circles for the nodes, using the size and color fields, with tooltips
-  subnode = sub_svg
-    .selectAll("circle")
-    .data(subgraphData.nodes)
-    .enter()
-    .append("circle")
-    .attr("r", (d) => scaleCircleSUB(d.size))
-    .attr("fill", (d) => d.color)
-    .call(
-      d3
-        .drag()
-        .on("start", SUBdragStarted)
-        .on("drag", SUBdragged)
-        .on("end", SUBdragEnded)
-    );
-
   // Add labels for the nodes
   sublabel = sub_svg
     .selectAll("text")
@@ -383,46 +354,6 @@ function refreshSub() {
     .style("fill", "#F1EC91")
     .attr("dy", (d) => scaleCircleSUB(d.size) + 15 + "px") // Vertically center the text
     .attr("text-anchor", "middle"); // Horizontally center the text
-
-  subnode
-    .on("mouseover", function (event, d) {
-      d3.select(this)
-        .transition()
-        .duration(200)
-        .attr("fill", "white")
-        .attr("r", (d) => scaleCircleSUB(d.size) * 1.1);
-      tooltip
-        .style("display", "none") // TO ENABLE TOOLTIP CHANGE TO "block"
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY - 10 + "px")
-        .html(`Node: ${d.id}`);
-    })
-    .on("mouseout", function (event, d) {
-      d3.select(this)
-        .transition()
-        .duration(200)
-        .attr("fill", (d) => d.color)
-        .attr("r", (d) => scaleCircleSUB(d.size));
-
-      tooltip.style("display", "none");
-    })
-    .on("click", (event, d) => {
-      sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
-      node_info.style("display", "block").html(getHtmlString(d));
-    });
-  // Update positions on each tick of the simulation
-  subsimulation.on("tick", () => {
-    sublink
-      .attr("x1", (d) => d.source.x)
-      .attr("y1", (d) => d.source.y)
-      .attr("x2", (d) => d.target.x)
-      .attr("y2", (d) => d.target.y);
-
-    subnode.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-
-    sublabel.attr("x", (d) => d.x).attr("y", (d) => d.y);
-  });
-  subsimulation.alphaTarget(0).restart();
 }
 
 let subsimulation = d3
@@ -454,7 +385,7 @@ let subnode = sub_svg
   .attr("r", (d) => scaleCircleSUB(d.size))
   .attr("fill", (d) => d.color)
   .call(
-    d3.drag().on("start", dragStarted).on("drag", dragged).on("end", dragEnded)
+    d3.drag().on("start", SUBdragStarted).on("drag", SUBdragged).on("end", SUBdragEnded)
   );
 
 // Add labels for the nodes
@@ -468,6 +399,18 @@ let sublabel = sub_svg
   .style("fill", "#F1EC91")
   .attr("dy", (d) => scaleCircleSUB(d.size) + 15 + "px") // Vertically center the text
   .attr("text-anchor", "middle"); // Horizontally center the text
+
+  subsimulation.on("tick", () => {
+    sublink
+      .attr("x1", (d) => d.source.x)
+      .attr("y1", (d) => d.source.y)
+      .attr("x2", (d) => d.target.x)
+      .attr("y2", (d) => d.target.y);
+
+    subnode.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+    sublabel.attr("x", (d) => d.x).attr("y", (d) => d.y);
+  });
 
 // Drag event handlers
 function SUBdragStarted(event, d) {
@@ -513,3 +456,87 @@ function getHtmlString(d) {
   Size: ${d.size} </p>
   <a href="${d.link}" target="_blank">link</a>`;
 }
+
+function addNode(newNode)
+{
+  subnodes.push(newNode);
+  updateGraph();
+}
+
+function addLink(newNode)
+{
+  sublinks.push(newNode);
+  updateGraph();
+}
+
+function removeNodes(nodeId)
+{
+  subnodes = subnodes.filter(d => d.id !== nodeId);
+  sublinks = sublinks.filter(d => d.source.id !== nodeId && d.target.id !== nodeId);
+  updateGraph();
+}
+function updateGraph()
+{
+  sublink = sublink.data(sublinks, d=> d.id);
+  sublink.exit().remove();
+  sublink = sublink.enter().append("line").merge(sublink);
+  sublink.attr("stroke", (d) => d.color);
+
+  subnode = subnode.data(subnodes, d=>d.id);
+  subnode.exit().remove();
+  subnode = subnode.enter().append("circle").attr("r", (d) => scaleCircleSUB(d.size))
+  .attr("fill", (d) => d.color)
+  .call(
+    d3
+      .drag()
+      .on("start", SUBdragStarted)
+      .on("drag", SUBdragged)
+      .on("end", SUBdragEnded)
+  ).merge(subnode);
+
+  subnode
+    .on("mouseover", function (event, d) {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("fill", "white")
+        .attr("r", (d) => scaleCircleSUB(d.size) * 1.1);
+      tooltip
+        .style("display", "none") // TO ENABLE TOOLTIP CHANGE TO "block"
+        .style("left", event.pageX + 10 + "px")
+        .style("top", event.pageY - 10 + "px")
+        .html(`Node: ${d.id}`);
+    })
+    .on("mouseout", function (event, d) {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .attr("fill", (d) => d.color)
+        .attr("r", (d) => scaleCircleSUB(d.size));
+
+      tooltip.style("display", "none");
+    })
+    .on("click", (event, d) => {
+      //sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
+      node_info.style("display", "block").html(getHtmlString(d));
+    });
+
+  subsimulation.nodes(subnodes);
+  subsimulation.force("link",d3
+    .forceLink(subgraphData.links)
+    .id((d) => d.id)
+    .distance(50));
+  subsimulation.alpha(0.3).restart();
+};
+
+subsimulation.on("tick", () => {
+  sublink
+    .attr("x1", (d) => d.source.x)
+    .attr("y1", (d) => d.source.y)
+    .attr("x2", (d) => d.target.x)
+    .attr("y2", (d) => d.target.y);
+
+  subnode.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+
+  sublabel.attr("x", (d) => d.x).attr("y", (d) => d.y);
+});
