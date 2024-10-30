@@ -1,0 +1,166 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #000000;
+}
+
+circle {
+  stroke-width: 1.5px;
+  stroke: black;
+}
+
+text {
+  font-size: 16px;
+  fill: #333;
+}
+
+line {
+  color: rgb(219, 234, 57);
+  stroke-width: 3px;
+}
+p {
+  white-space: wrap;
+}
+.container{
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+
+.container_graph {
+    display: grid;
+    width: 96vw;
+    height: 90vh;
+    grid-template-columns: 100px 1fr 1fr;
+    grid-template-rows: 100px 1fr 2fr 60px;
+    grid-template-areas: 
+    "logo header header"
+    "svg svg sub_svg"
+    "svg svg node_info"
+    "bottom bottom bottom";
+}
+
+.svg_graph {
+  background-color: #201f30;
+}
+.svg_subgraph{
+  height: 100%;
+  width: 100%;
+  background-color: #201f30;
+}
+.subsvg_container{
+  grid-area: sub_svg;
+}
+.svg_container{
+  grid-area: svg;
+}
+.node_info{
+  grid-area: node_info;
+  background: rgb(90, 114, 145);
+  border: 5px solid rgb(71, 29, 62);
+  overflow-y: auto;     /* Включаем вертикальную прокрутку      */
+  overflow-x: hidden;   /* Отключаем горизонтальную прокрутку   */
+  padding: 10px;
+  box-sizing: border-box;
+  white-space: auto;     
+  font-size: 24px;
+  color: #f4f3dc;
+}
+.sidebar{
+  grid-area: sidebar;
+  background-color: rgb(46, 14, 135);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.bottom{
+  grid-row-gap: 2px;
+  grid-area: bottom;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+}
+.link-text{
+  color:whitesmoke;
+  font-size: 28px;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 6px;
+  background: rgb(173, 208, 253);
+  border: 5px solid rgb(228, 36, 186);
+  border-radius: 20%;
+  pointer-events: none;
+  display: none;
+  font-size: 12px;
+
+}
+.headline {
+  grid-area: header;
+}
+
+
+/*Could be changed later*/
+.logo-alpha {
+  height: 98%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  justify-content: center;
+}
+.head-logo-alpha {
+  grid-area: logo;
+  position: relative;
+  margin-right: 0px;
+  height: 100%;
+  display: flex;
+  flex:none;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  justify-items: center;
+}
+.head-logo-alpha::before,
+.head-logo-alpha::after {
+  content: "";
+  height: 100%;
+  aspect-ratio: 1/1;
+  position: absolute;
+  background-image: conic-gradient(
+    from var(--angle),
+    rgb(123, 45, 207),
+    rgb(189, 34, 224),
+    rgb(226, 56, 232),
+    rgb(245, 121, 195),
+    rgb(248, 140, 212),
+    rgb(245, 121, 195),
+    rgb(180, 9, 223),
+    rgb(120, 3, 228),
+    rgb(123, 45, 207)
+  );
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  z-index: -1;
+  border-radius: 50%;
+  animation: 3s spin linear infinite;
+}
+.head-logo-alpha::before {
+  filter: blur(1.5rem);
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}

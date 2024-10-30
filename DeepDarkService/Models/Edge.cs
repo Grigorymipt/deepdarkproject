@@ -5,13 +5,14 @@ namespace DeepDarkService.Models;
 public class Edge
 {
     [Key]
-    public Guid Id { get; set; } = new Guid();
+
+    public Guid Id { get; set; } = Guid.NewGuid();
    
     [Required]
     public Guid First { get; set; }
     [Required]
     public Guid Second { get; set; }
-    
+
     [Required]
     public string Relation { get; set; }
     
