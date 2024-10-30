@@ -11,12 +11,14 @@ using Math = DeepDarkService.Utils.Math;
 
 namespace DeepDarkService.Controllers;
 
-public class KnowledgeTreeController(ILogger<HomeController> logger) : Controller
+public class KnowledgeTreeController(ILogger<HomeController> logger, IConfiguration configuration) : Controller
 {
     private readonly ILogger<HomeController> _logger = logger;
+    private readonly IConfiguration _configuration = configuration;
 
     public IActionResult Index()
     {
+        Console.WriteLine(_configuration["Environment"]);
         return View();
     }
     [HttpPost]
