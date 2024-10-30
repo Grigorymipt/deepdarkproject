@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepDarkService", "DeepDark
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepDarkService.Tests", "DeepDarkService.Tests\DeepDarkService.Tests.csproj", "{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepDarkConsoleSbert", "DeepDarkConsoleSbert\DeepDarkConsoleSbert.csproj", "{998ED393-F0EF-43A8-A356-EEA96E59F0EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AskLlama", "AskLlama\AskLlama.csproj", "{6C152A64-657F-43DE-9A46-DC70B53670B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9172D00-B3B6-4CFB-B97B-DA125C5075D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{998ED393-F0EF-43A8-A356-EEA96E59F0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{998ED393-F0EF-43A8-A356-EEA96E59F0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{998ED393-F0EF-43A8-A356-EEA96E59F0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{998ED393-F0EF-43A8-A356-EEA96E59F0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C152A64-657F-43DE-9A46-DC70B53670B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C152A64-657F-43DE-9A46-DC70B53670B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C152A64-657F-43DE-9A46-DC70B53670B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C152A64-657F-43DE-9A46-DC70B53670B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

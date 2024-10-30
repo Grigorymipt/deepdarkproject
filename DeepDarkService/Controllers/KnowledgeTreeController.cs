@@ -1,10 +1,13 @@
+using System.Drawing;
 using System.Linq.Expressions;
 using System.Text;
+using DeepDarkService.Models;
 using DeepDarkService.Picture;
 using Microsoft.AspNetCore.Mvc;
 using DeepDarkService.Utils;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using OxyPlot;
 using TorchSharp.Modules;
 using Embedding = DeepDarkService.Knowledge.Embedding;
 using Math = DeepDarkService.Utils.Math;
@@ -61,14 +64,25 @@ public class KnowledgeTreeController(ILogger<HomeController> logger, IConfigurat
             //         //     "mind_map_from_" + file.FileName
             //         // );
             //     };
-            
 
             // Return job ID to track status
-            return File(
-                FileHandler.HandleWithSVG<int>(fileContent, SVG.RenderMindMapToByteArray),
-                "image/svg+xml",
-                "mind_map_from_" + file.FileName
-            );
+            
+            // File(
+            //     FileHandler.HandleWithSVG<int>(fileContent, SVG.RenderMindMapToByteArray),
+            //     "image/svg+xml",
+            //     "mind_map_from_" + file.FileName
+            // );
+            var makeMap = Task.Run(() =>
+            {
+                var imageBytes = FileHandler.HandleWithSVG<int>(fileContent, SVG.RenderMindMapToByteArray);
+                System.IO.File.WriteAllBytesAsync(
+                    Environment.GetEnvironmentVariable("Maps")
+                    + file.FileName + ".map",
+                    imageBytes
+                ).Wait();
+                Console.WriteLine("mind map saved in local storage");
+            });
+            return Accepted(makeMap.Id); 
         }
         catch (Exception e)
         {
