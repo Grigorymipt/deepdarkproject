@@ -2,12 +2,17 @@ using Microsoft.ML;
 using Microsoft.ML.Transforms.Onnx;
 
 using SbertTokenizerEmbedder;
-class Embedder
+public class Embedder
 {
+    public Embedder() => init();
     public const int batch_size = 512;   // This is valid for traced sbert model, i think
-    public string vocabPath = "tokenizer.json"; // CHANGE THIS ONE
+    public string vocabPath = Environment
+            .GetEnvironmentVariable("SBERT_VOCAB") ?? throw // Specify the path
+            new InvalidOperationException(); 
 
-    public string modelPath = "sbert_onnx_2.onnx"; // CHANGE THIS ONE
+    public string modelPath = Environment
+            .GetEnvironmentVariable("SBERT_MODEL") ?? throw // Specify the path
+            new InvalidOperationException();
 
     public PredictionEngine<SbertInput, SbertOutput> predictionEngine = null;
     public OnnxTransformer model = null;

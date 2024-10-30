@@ -74,9 +74,11 @@ public class KnowledgeTreeController(ILogger<HomeController> logger, IConfigurat
             // );
             var makeMap = Task.Run(() =>
             {
+                var pathVar = Environment.GetEnvironmentVariable("Maps") ?? throw new InvalidOperationException();
+                Console.WriteLine("mind map start");
                 var imageBytes = FileHandler.HandleWithSVG<int>(fileContent, SVG.RenderMindMapToByteArray);
                 System.IO.File.WriteAllBytesAsync(
-                    Environment.GetEnvironmentVariable("Maps")
+                    pathVar
                     + file.FileName + ".map",
                     imageBytes
                 ).Wait();

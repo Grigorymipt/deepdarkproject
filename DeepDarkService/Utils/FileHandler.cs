@@ -17,14 +17,30 @@ public static class FileHandler
     public static List<Edge> GetListOfEdges(List<Vertex> vertexList)
     {
         var model = Embedding.GetModel();
-        
+        return GetListOfEdgesFromCustomEmb(
+            vertexList, 
+            inputString => Embedding.Get(inputString, model).Select(a => (double)a)
+            );
+    }
+
+        public static List<Edge> GetListOfEdges2(List<Vertex> vertexList)
+    {
+        var emb = new Embedder();
+        return GetListOfEdgesFromCustomEmb(
+            vertexList, 
+            inputString => emb.Get(inputString).Select(a => (double)a)
+            );
+    }
+
+    private static List<Edge> GetListOfEdgesFromCustomEmb(List<Vertex> vertexList, Func<string,IEnumerable<double>> embed)
+    {       
         var threshold = double.Parse(Environment.GetEnvironmentVariable("Threshold") 
                                     ?? throw new NullReferenceException("Threshold"), CultureInfo.InvariantCulture);
         return vertexList.Select(x => vertexList.Where(y
                 =>
                 {
-                    var ea = Embedding.Get(VertexToString(x), model).Select(a => (double)a);
-                    var eb = Embedding.Get(VertexToString(y), model).Select(a => (double)a);
+                    var ea = embed(VertexToString(x));
+                    var eb = embed(VertexToString(y));
                     var cosine = Math.Cos(ea, eb);
                     // Console.WriteLine(cosine);
                     // Console.WriteLine(x.Header);
@@ -74,7 +90,7 @@ public static class FileHandler
         {
             Console.WriteLine(VertexToString(vertex));
         }
-        var edgesList = GetListOfEdges(vertexList);
+        var edgesList = GetListOfEdges2(vertexList);
         return func(vertexList, edgesList);
     }
     
