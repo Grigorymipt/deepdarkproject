@@ -1,3 +1,4 @@
+using DeepDarkService.Models;
 using Xunit.Abstractions;
 
 namespace DeepDarkService.Tests.ServiceTests;
@@ -21,4 +22,18 @@ public class ParserTests
         _testOutputHelper.WriteLine(edges.Aggregate((acc, x) => $"{acc}\n{x}"));
         Assert.Equal(7, edges.Count);
     }
+
+    [Fact]
+    public void ExampleTest()
+    {
+        // Пусть мы достали из Edge какой то айдишник
+        var IdFromEdge = Guid.NewGuid(); 
+        
+        // Пусть у нас есть лист каких то вершин(vertices)
+        List<Vertex> vertices = new List<Vertex>();
+        
+        // Тогда чтобы найте узел можно сделать так:
+        vertices.Find(vertex => vertex.Id == IdFromEdge);
+    }
+    
 }

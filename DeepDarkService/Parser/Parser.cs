@@ -23,7 +23,7 @@ public static class Parser
     {
         var result = new List<Vertex>();
         string currentHeader = null;
-        var currentBody = new List<string>();
+        string currentBody = "";
         int level = 0; 
 
         foreach (var node in document)
@@ -36,7 +36,7 @@ public static class Parser
                     result.Add(
                         new Vertex(currentHeader, string.Join(Environment.NewLine, currentBody), level)
                         );
-                    currentBody.Clear(); // Clear the body for the new header
+                    currentBody = ""; // Clear the body for the new header
                     
                 }
                 // Get level of the heading 
@@ -46,7 +46,7 @@ public static class Parser
             }
             else if (currentHeader != null) // Collect body content until the next header
             {
-                currentBody.Add(node.ToString());
+                currentBody += node.ToString();
             }
         }
 
