@@ -9,6 +9,8 @@ let graphData = {
   links: links,
 };
 
+let link_size = 100 + (100 / nodes.length);
+
 let subnodes = [];
 let sublinks = [];
 let subgraphData = { nodes: subnodes, links: sublinks };
@@ -33,7 +35,7 @@ let subheight = subsvg_container.clientHeight;
 let content = svg.append("g");
 let zoom = d3
   .zoom()
-  .scaleExtent([0.5, 5])
+  .scaleExtent([0.5, 10])
   .on("zoom", (event) => {
     content.attr("transform", event.transform);
   })
@@ -52,9 +54,9 @@ const simulation = d3
     d3
       .forceLink(graphData.links)
       .id((d) => d.id)
-      .distance(150)
+      .distance(link_size)
   )
-  .force("charge", d3.forceManyBody().strength(-600))
+  .force("charge", d3.forceManyBody().strength(-20))
   .force("center", d3.forceCenter(width / 2, height / 2))
   .force("edge", repelFromEdges()); // Custom force to push nodes from edges
 
@@ -89,7 +91,7 @@ const label = content
   .data(graphData.nodes)
   .enter()
   .append("text")
-  .text((d) => d.text)
+  .text((d) => d.text.length > 10 ? d.text.slice(0, 20) + " ..." : d.text)
   .style("font-size", "16px")
   .style("fill", "#F1EC91")
   .attr("dy", (d) => scaleCircle(d.size) + 15 + "px") // Vertically center the text
@@ -175,24 +177,24 @@ window.addEventListener("load", resizeSvg);
 window.addEventListener("resize", resizeSvg);
 
 // Custom force to push nodes away from screen edges
-function repelFromEdges(padding = 50, strength = 0.1) {
+function repelFromEdges(padding = 50, strength = 0.01) {
   return function () {
     nodes.forEach((node) => {
       // Force to repel nodes from left edge
-      if (node.x < padding) {
-        node.vx += (padding - node.x) * strength;
+      if (node.x < -3*width + padding) {
+        node.vx += (-3*width + padding - node.x) * strength;
       }
       // Force to repel nodes from right edge
-      if (node.x > width - padding) {
-        node.vx -= (node.x - (width - padding)) * strength;
+      if (node.x > 3*width - padding) {
+        node.vx -= (node.x - (3 * width - padding)) * strength;
       }
       // Force to repel nodes from top edge
-      if (node.y < padding) {
-        node.vy += (padding - node.y) * strength;
+      if (node.y < -3 * height + padding) {
+        node.vy += (-3 * height + padding - node.y) * strength;
       }
       // Force to repel nodes from bottom edge
-      if (node.y > height - padding) {
-        node.vy -= (node.y - (height - padding)) * strength;
+      if (node.y > 3 * height - padding) {
+        node.vy -= (node.y - (3 * height - padding)) * strength;
       }
     });
   };
@@ -290,7 +292,7 @@ function refreshSub() {
     .data(subgraphData.nodes)
     .enter()
     .append("text")
-    .text((d) => d.text)
+    .text((d) => d.text.length > 10 ? d.text.slice(0, 20) + " ..." : d.text)
     .style("font-size", "16px")
     .style("fill", "#F1EC91")
     .attr("dy", (d) => scaleCircleSUB(d.size) + 15 + "px") // Vertically center the text
@@ -412,16 +414,14 @@ function getNodeColors(nodes) {
 }
 
 function scaleCircle(x) {
-  return x * 5 + 5;
+  return 15 / x + 5;
 }
 function scaleCircleSUB(x) {
-  return x * 4 + 5;
+  return 15 / x + 5;
 }
 
 function getHtmlString(d) {
   return `<p>Node: ${d.id} <br>
-  Group_1: ${d.groups[0]} <br>
-  File_text: ${d.file_text} <br>
-  Size: ${d.size} </p>
-  <a href="${d.link}" target="_blank">link</a>`;
+  Node level: ${d.size} <br> </p>
+  <p>Node text: ${d.file_text} </p>`;
 }
