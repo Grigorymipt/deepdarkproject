@@ -1,3 +1,5 @@
+@model (List<Node>,List<Link>)
+
 @{
 ViewData["Title"] = "Knowledge Tree View Page";
 }
@@ -37,6 +39,10 @@ ViewData["Title"] = "Knowledge Tree View Page";
   <!-- Link to D3.js Library from a CDN -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <!-- CSS for Styling the Network Graph -->
+  <script>
+    window.nodes = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Item1));
+    window.links = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Item2));
+  </script>
   <link href="~/css/graph_view_styles.css" rel="stylesheet" asp-append-version="true" />
   <script src="~/js/requests.js" asp-append-version="true"></script>
   <script src="~/js/graph_view.js" asp-append-version="true"></script>
