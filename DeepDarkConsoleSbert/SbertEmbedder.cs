@@ -20,6 +20,7 @@ public class Embedder
 
     public void init()
     {
+        
         var mlContext = new MLContext();
         var enc = new SbertTokenizer(vocabPath);
 
@@ -36,6 +37,7 @@ public class Embedder
         predictionEngine = mlContext.Model.CreatePredictionEngine<SbertInput, SbertOutput>(model);
 
         sbertModel = new SbertModel(pipeline, enc, mlContext);
+        Console.WriteLine("Model loaded");
     }
     public float[] Get(string input_string)
     {
@@ -46,25 +48,23 @@ public class Embedder
 
         // Use the prediction engine to predict
         var input = new long[3 * batch_size];
-        var bert_input = new SbertInput();
-        var bert_output = new SbertOutput();
-        var semi_answer = new List<float>();
         foreach (var batch in batches)
         {
             Array.Copy(get_input(batch), input, batch_size * 3);
-            bert_input.input_ids = input;
-            bert_output = predictionEngine.Predict(bert_input);
+            
+            var bert_input = new SbertInput { input_ids = input };
+            var bert_output = predictionEngine.Predict(bert_input);
+            
             var emb_size = bert_output.output.Length / batch_size;
             for (int j = 0; j < batch_size; j++)
             {
-                if (input[(2 * batch_size)..(3 * batch_size)][j] != 0)
+                if (input[(2 * batch_size) + j] != 0)
                 {
+                    var semi_answer = new float[emb_size];
                     for (int i = 0; i < emb_size; i++)
                     {
-                        semi_answer.Add(bert_output.output[i + j * emb_size]);
-                    }
-                    answers.Add(semi_answer);
-                    semi_answer = new List<float>();
+                        semi_answer[i] = bert_output.output[i + j * emb_size];                    }
+                    answers.Add(semi_answer.ToList());
                 }
             }
         }

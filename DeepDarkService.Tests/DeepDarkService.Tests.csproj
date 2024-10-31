@@ -24,4 +24,8 @@
       <ProjectReference Include="..\DeepDarkService\DeepDarkService.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Pages\MapToView\" />
+    </ItemGroup>
+
 </Project>
