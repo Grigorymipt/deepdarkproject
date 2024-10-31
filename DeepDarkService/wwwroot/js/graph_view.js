@@ -121,7 +121,7 @@ node
   })
   .on("click", (event, d) => {
     node_info.html(getHtmlString(d));
-    sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
+    //sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
     selectNode(d);
   });
 // Update positions on each tick of the simulation
@@ -321,7 +321,7 @@ function refreshSub() {
       tooltip.style("display", "none");
     })
     .on("click", (event, d) => {
-      sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
+      //sendHttpRequest('GET', d.link).then((getData) => {d.file_text = getData;});
       node_info.style("display", "block").html(getHtmlString(d));
     });
   // Update positions on each tick of the simulation
@@ -423,5 +423,5 @@ function scaleCircleSUB(x) {
 function getHtmlString(d) {
   return `<p>Node: ${d.id} <br>
   Node level: ${d.size} <br> </p>
-  <p>Node text: ${d.file_text} </p>`;
+  <p>Node text: ${d.text} </p>`;
 }
