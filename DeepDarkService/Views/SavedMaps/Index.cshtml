@@ -1,11 +1,11 @@
-@model IEnumerable<string>
+@model IEnumerable<FileInfo>
 
 <h2>JSON Files</h2>
 <ul>
     @foreach (var fileLink in Model)
     {
         <li>
-            <a href="@fileLink" target="_blank">@fileLink</a>
+            <a href="@Url.Action("Index", "KnowledgeGraph", new { filename = fileLink.Name })" target="_blank">@fileLink.Name</a>
         </li>
     }
 </ul>
