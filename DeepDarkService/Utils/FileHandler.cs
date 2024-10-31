@@ -14,16 +14,7 @@ public static class FileHandler
     public static List<Vertex> GetListOfVertices(string fileContent)
         => Parser.Parser.GetVerticesFromFile(fileContent);
     // TODO: hardcode, rm Console
-    public static List<Edge> GetListOfEdges(List<Vertex> vertexList)
-    {
-        var model = Embedding.GetModel();
-        return GetListOfEdgesFromCustomEmb(
-            vertexList, 
-            inputString => Embedding.Get(inputString, model).Select(a => (double)a)
-            );
-    }
-
-        public static List<Edge> GetListOfEdges2(List<Vertex> vertexList)
+    public static List<Edge> GetListOfEdges2(List<Vertex> vertexList)
     {
         var emb = new Embedder();
         return GetListOfEdgesFromCustomEmb(
@@ -36,19 +27,20 @@ public static class FileHandler
     {       
         var threshold = double.Parse(Environment.GetEnvironmentVariable("Threshold") 
                                     ?? throw new NullReferenceException("Threshold"), CultureInfo.InvariantCulture);
-        return vertexList.Select(x => vertexList.Where(y
-                =>
+
+        var embList = vertexList.Select(x => embed(VertexToString(x))).ToList();
+        List<Edge> edges = new();
+        for (int i = 0; i < embList.Count; i++)
+        {
+            for (int j = i + 1; j < embList.Count; j++)
+            {
+                if (Math.Cos(embList[i], embList[j]) > threshold)
                 {
-                    var ea = embed(VertexToString(x));
-                    var eb = embed(VertexToString(y));
-                    var cosine = Math.Cos(ea, eb);
-                    // Console.WriteLine(cosine);
-                    // Console.WriteLine(x.Header);
-                    // Console.WriteLine(y.Header);
-                    return (cosine > threshold) && (x!=y);
-                })
-                .Select(y => new Edge(x.Id, y.Id, "horizontal")))
-                .Aggregate((acc, x) => acc.Concat(x)).ToList();
+                    edges.Add(new Edge(vertexList[i].Id, vertexList[j].Id, "horizontal"));
+                } 
+            }
+        }
+        return edges;
     }
 
     // TODO: Add length control 
@@ -69,17 +61,19 @@ public static class FileHandler
         return outputString;
     }
 
-    public static string HandleWithPlainText(string fileContent)
-    {
-        var vertexList = GetListOfVertices(fileContent);
-        foreach (var vertex in vertexList)
-        {
-            Console.WriteLine(VertexToString(vertex));
-        }
-        var edgesList = GetListOfEdges(vertexList);
-        return EdgesToString(edgesList, vertexList);
-    }
+    // public static string HandleWithPlainText(string fileContent)
+    // {
+    //     var vertexList = GetListOfVertices(fileContent);
+    //     foreach (var vertex in vertexList)
+    //     {
+    //         Console.WriteLine(VertexToString(vertex));
+    //     }
+    //     var edgesList = GetListOfEdges(vertexList);
+    //     return EdgesToString(edgesList, vertexList);
+    // }
 
+    
+    
     public static byte[] HandleWithSVG<T>(
         string fileContent,
         Func<List<Vertex>, List<Edge>, byte[]> func

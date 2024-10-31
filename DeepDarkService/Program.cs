@@ -1,10 +1,11 @@
 using DeepDarkService.Extensions;
 
 // TODO: remove
-Environment.SetEnvironmentVariable("Maps", @"C:\Users\vasili\Desktop\MIPT_4\DigitalMIPT\");
+Environment.SetEnvironmentVariable("Maps", "/home/pommes/app/Resources/Maps/");
+Environment.SetEnvironmentVariable("Resources", "/home/pommes/app/Resources/");
 Environment.SetEnvironmentVariable("Threshold", "0.8");
-Environment.SetEnvironmentVariable("SBERT_VOCAB", @"C:\Users\vasili\Desktop\MIPT_4\DigitalMIPT\sbert\MyFirstApp\bin\Debug\net8.0\tokenizer.json");
-Environment.SetEnvironmentVariable("SBERT_MODEL", @"C:\Users\vasili\Desktop\MIPT_4\DigitalMIPT\sbert\MyFirstApp\bin\Debug\net8.0\sbert_onnx.onnx");
+Environment.SetEnvironmentVariable("SBERT_VOCAB", "/home/pommes/app/Resources/tokenizer.json");
+Environment.SetEnvironmentVariable("SBERT_MODEL", "/home/pommes/app/Resources/sbert_onnx_2.onnx");
 
 
 var builder = WebApplication.CreateBuilder(args);

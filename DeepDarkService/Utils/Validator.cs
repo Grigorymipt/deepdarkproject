@@ -2,7 +2,7 @@ namespace DeepDarkService.Utils;
 
 public static class Validator
 {
-    private const string InputFileExtension = ".md";
+    private const string InputFileExtension = ".md"; 
     
     public static bool FileExtension(string fileName) => Path.GetExtension(fileName) == InputFileExtension;
     

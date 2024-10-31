@@ -1,0 +1,38 @@
+@model List<Link>
+
+@using Newtonsoft.Json
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON File Viewer</title>
+</head>
+<body>
+<h2>JSON File Content</h2>
+
+<!-- A preformatted area to display the JSON -->
+<pre id="jsonContent"></pre>
+
+<script>
+        // Use Razor to safely inject the JSON string into JavaScript
+        const jsonString = @Html.Raw(JsonConvert.SerializeObject(Model));
+        let jsonData;
+
+        try {
+            // Parse JSON data from the string
+            jsonData = JSON.parse(jsonString);
+            // Display parsed JSON in the <pre> tag in pretty format
+            document.getElementByid("jsonContent").textContent = JSON.stringify(jsonData, null, 4);
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+            // Display error message in the <pre> element
+            document.getElementByid("jsonContent").textContent = "Error parsing JSON data.";
+        }
+    </script>
+
+<!-- Add a link to go back or home -->
+<a href="/">Go Back</a>
+</body>
+</html>
