@@ -21,7 +21,7 @@ public class SavedMapsController : Controller
         
         
         return View(files.Select(
-            f => Url.Action("Index", "KnowledgeGraph", new { filename = f.Name })
+            f =>  f //Url.Action("Index", "KnowledgeGraph", new { filename = f.Name })
             ).ToList());
     }
 }
