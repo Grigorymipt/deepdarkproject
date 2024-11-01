@@ -11,6 +11,6 @@ public class NodeFactory
             link: "", 
             text: vertex.Header, 
             filename: "", // TODO: add logic 
-            file_text: vertex.Header
+            file_text: vertex.Body
         );
 }
